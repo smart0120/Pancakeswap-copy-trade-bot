@@ -36,7 +36,7 @@ lp_contract = web3.eth.contract(address=web3.toChecksumAddress('0x6dB23b5360c9D2
 
 def get_trx_receipt(trx):
     url = f"https://api.bscscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash={trx}&apikey={bscan_api_key}"
-    res = requests.get(url).json()
+    res = requests.get(url, timeout=60).json()
     if res['result']:
         return res['result']
     else:
