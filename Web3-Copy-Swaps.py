@@ -1,14 +1,9 @@
 import asyncio
-import inspect
 import time
-from threading import Thread
-import requests
-from hexbytes import HexBytes
-from web3.datastructures import AttributeDict
 from config2 import *
 from web3 import Web3
 import warnings
-import sys, os
+from security import safe_requests
 
 # sys.stdout = open(f"{os.getcwd()}/output.txt", "w")
 print("test sys.stdout")
@@ -36,7 +31,7 @@ lp_contract = web3.eth.contract(address=web3.toChecksumAddress('0x6dB23b5360c9D2
 
 def get_trx_receipt(trx):
     url = f"https://api.bscscan.com/api?module=proxy&action=eth_getTransactionReceipt&txhash={trx}&apikey={bscan_api_key}"
-    res = requests.get(url).json()
+    res = safe_requests.get(url).json()
     if res['result']:
         return res['result']
     else:
