@@ -40,7 +40,7 @@ contract = web3.eth.contract(address=pancakeswap_address, abi=panabi)
 
 def get_abi(address):
     url = f"https://api.bscscan.com/api?module=contract&action=getabi&address={address}&apikey={bscan_api_key}"
-    res = requests.get(url).json()
+    res = requests.get(url, timeout=60).json()
     # print(res)
     print(res)
 
@@ -56,7 +56,7 @@ def get_abi(address):
 
 def get_trx_receipt(trx):
     url = f"https://api.bscscan.com/api?module=proxy&action=eth_getTransactionByHash&txhash={trx}&apikey={bscan_api_key}"
-    res = requests.get(url).json()
+    res = requests.get(url, timeout=60).json()
     print(res)
     data = contract.decode_function_input(res['result']['input'])
     print("swap" in str(data[0]))
@@ -143,7 +143,7 @@ def swap_token(hash):
 def check_holders_1k(token_address):
     url = f"https://api.covalenthq.com/v1/56/tokens/{token_address}/token_holders/?format=JSON&page-size=1000&key={covalent_api_key}"
 
-    res = requests.get(url).json()
+    res = requests.get(url, timeout=60).json()
     # print(res)
     try:
         if int(res['error_code']) == 406:
@@ -159,7 +159,7 @@ def check_holders_1k(token_address):
 
 def get_latest_trxs():
     url = f"https://api.bscscan.com/api?module=account&action=tokentx&address={address_to_track}&page=1&offset=10&startblock=0&endblock=999999999&sort=desc&apikey={bscan_api_key}"
-    res = requests.get(url).json()
+    res = requests.get(url, timeout=60).json()
     # print(res)
     print(res)
     global trx_list
